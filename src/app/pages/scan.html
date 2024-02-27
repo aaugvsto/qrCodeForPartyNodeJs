@@ -61,12 +61,8 @@
             Instascan.Camera.getCameras().then(cameras => 
             {
                 if(cameras.length > 0){
-                    for (let index = 0; index < cameras.length; index++) {
-                        const element = cameras[index];
-                        alert(JSON.stringify(element));
-                    }
-
-                    //scanner.start(cameras[1]);
+                    let camera = cameras.find(camera => camera.name.includes('back') || camera.name.includes('traseira'));
+                    scanner.start(camera ?? camera[0]);
                 } else {
                     console.error("Não existe câmera no dispositivo!");
                 }
