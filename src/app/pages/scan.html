@@ -41,7 +41,7 @@
             pararLeitura();
 
             let currentBaseUrl = window.location.origin;
-            let url = `${currentBaseUrl}/qrcode/12345/validate`;
+            let url = `${currentBaseUrl}/qrcode/${content}/validate`;
             fetch(url, {
                 method: 'GET',
                 headers: {
@@ -62,7 +62,11 @@
             {
                 if(cameras.length > 0){
                     let camera = cameras.find(camera => camera.name.includes('back') || camera.name.includes('traseira'));
-                    scanner.start(camera);
+
+                    if(camera)
+                        scanner.start(camera);
+                    else
+                        scanner.start(cameras[0]);
                 } else {
                     console.error("Não existe câmera no dispositivo!");
                 }
