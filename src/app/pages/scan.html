@@ -116,7 +116,7 @@ Instascan.Camera.getCameras().then(cameras => {
             const selectedCamera = cameras.find(camera => camera.id === selectedCameraId);
             if (selectedCamera) {
                 // Criando a instância do scanner com a câmera selecionada
-                const scanner = new Instascan.Scanner({ video: selectedCamera });
+                const scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
                 // Adicionando o listener para quando um QR code for detectado
                 scanner.addListener('scan', function (content) {
                     console.log('QR code escaneado:', content);
