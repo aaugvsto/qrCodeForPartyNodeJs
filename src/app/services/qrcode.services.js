@@ -8,7 +8,7 @@ const client = new MongoClient(uri).db('QRCodes').collection('QRCodesLog');
 async function gerarQRCode(filePath, reponsavel) {
   try {
     let date = formatarData(new Date());    
-    let document = await client.insertOne({ validated: false, creationDate: date, responsible: reponsavel, validationDate: null});
+    let document = await client.insertOne({ validated: false, creationDate: date, responsible: reponsavel, validationDate: ''});
     let nomeArquivo = `${document.insertedId}.png`;
 
     await QRCode.toFile(filePath + nomeArquivo, `${document.insertedId}`);
@@ -26,7 +26,8 @@ async function validateQRCode(id){
 
   if(document.validated) return false;
 
-  await client.updateOne({ _id: new ObjectId(id) }, { $set: { validated: true, validationDate: formatarData() } });
+  let date = formatarData();
+  await client.updateOne({ _id: new ObjectId(id) }, { $set: { validated: true, validationDate: date } });
 
   return true;
 }
