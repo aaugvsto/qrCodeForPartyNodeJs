@@ -60,11 +60,21 @@
         function lerQRCode(){
             Instascan.Camera.getCameras().then(cameras => 
             {
-                if(cameras.length > 0){
-                    let camera = cameras.find(camera => camera.name.includes('back') || camera.name.includes('traseira'));
-                    scanner.start(camera ?? camera[0]);
+                let selectedCamera;
+                if (cameras.length > 0) {
+                    for (let c = 0; c < cameras.length; c++) {
+                        if (cameras[c].name.indexOf('back') != -1) {
+                            selectedCamera = cameras[c];
+                        }
+                    }
+                    
+                    if (!selectedCamera) selectedCamera = cameras[0];
+                }
+                
+                if (selectedCamera) {
+                    scanner.start(selectedCamera);
                 } else {
-                    console.error("Não existe câmera no dispositivo!");
+                    console.error("No cameras found.");
                 }
             });
             
