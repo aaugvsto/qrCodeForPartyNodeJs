@@ -10,7 +10,6 @@ const { gerarQRCode, validateQRCode, listarQRCodes, deletarQRCode, gerarImagemQR
 const { login } = require('./services/user.service');
 
 const app = express();
-const port = 3000;
 
 app.use(express.static('pages'));
 app.use(cors());
@@ -101,6 +100,6 @@ app.delete('/qrcode/:id', async (req, res) => {
   res.status(200).send(JSON.stringify({ success: result }));
 });
 
-app.listen(port, () => {
-  console.log(`Servidor rodando em http://localhost:${port}`);
+app.listen(process.env.PORT ?? 6700, () => {
+  console.log(`Server is running on port ${process.env.PORT ?? 6700} 🚀`);
 });
