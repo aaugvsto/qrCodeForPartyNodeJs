@@ -15,7 +15,7 @@ app.use(express.static('pages'));
 app.use(cors());
 app.use(express.json());
 
-pp.get('/', (req, res) => {
+app.get('/', (req, res) => {
   res.sendFile(__dirname + '/pages/login.html');
 });a
 
