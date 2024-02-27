@@ -62,13 +62,13 @@
             {
                 let selectedCamera;
                 if (cameras.length > 0) {
-                    for (let c = 0; c < cameras.length; c++) {
-                        if (cameras[c].name.indexOf('back') != -1) {
-                            selectedCamera = cameras[c];
-                        }
+                for (let c = 0; c < cameras.length; c++) {
+                    if (cameras[c].name.indexOf('back') != -1) {
+                        selectedCamera = cameras[c];
                     }
-                    
-                    if (!selectedCamera) selectedCamera = cameras[0];
+                }
+                
+                if (!selectedCamera) selectedCamera = cameras[0];
                 }
                 
                 if (selectedCamera) {
@@ -94,6 +94,48 @@
         function isMobileDevice() {
             return /Mobi|Android/i.test(navigator.userAgent);
         }
+
+        // Lista de dispositivos de vídeo disponíveis
+Instascan.Camera.getCameras().then(cameras => {
+    if (cameras.length > 0) {
+        // Exibindo um seletor para o usuário escolher a câmera
+        const cameraSelector = document.createElement('select');
+        cameras.forEach(camera => {
+            const option = document.createElement('option');
+            option.value = camera.id;
+            option.text = camera.name;
+            cameraSelector.appendChild(option);
+        });
+        document.body.appendChild(cameraSelector);
+
+        // Adicionando um botão para iniciar o scanner
+        const startButton = document.createElement('button');
+        startButton.textContent = 'Iniciar Scanner';
+        startButton.addEventListener('click', function () {
+            const selectedCameraId = cameraSelector.value;
+            const selectedCamera = cameras.find(camera => camera.id === selectedCameraId);
+            if (selectedCamera) {
+                // Criando a instância do scanner com a câmera selecionada
+                const scanner = new Instascan.Scanner({ video: selectedCamera });
+                // Adicionando o listener para quando um QR code for detectado
+                scanner.addListener('scan', function (content) {
+                    console.log('QR code escaneado:', content);
+                    // Faça o que for necessário com o conteúdo do QR code aqui
+                });
+                // Iniciando o scanner
+                scanner.start(selectedCamera);
+            } else {
+                console.error('Câmera selecionada não encontrada.');
+            }
+        });
+        document.body.appendChild(startButton);
+    } else {
+        console.error('Nenhuma câmera encontrada.');
+    }
+}).catch(err => {
+    console.error(err);
+});
+
     </script>
 </body>
 </html>
