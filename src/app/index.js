@@ -23,8 +23,16 @@ app.get('/home', (req, res) => {
   res.sendFile(__dirname + '/pages/index.html');
 });
 
-app.get('/listar', (req, res) => {
-  res.sendFile(__dirname + '/pages/listar.html');
+app.get('/gerar', (req, res) => {
+  res.sendFile(__dirname + '/pages/index.html');
+});
+
+app.get('/gerenciar', (req, res) => {
+  res.sendFile(__dirname + '/pages/gerenciar.html');
+});
+
+app.get('/scan', (req, res) => {
+  res.sendFile(__dirname + '/pages/scan.html');
 });
 
 app.post('/user/login', (req, res) => {
@@ -83,11 +91,13 @@ app.get('/qrcode/:id', async (req, res) => {
 });
 
 app.get('/qrcode/:id/validate', async (req, res) => {
-  let idQrCode = req.params.id;
-  let result = await validateQRCode(idQrCode)
-
-  if(result) res.sendFile(__dirname + '/pages/successValidation.html');
-  else res.sendFile(__dirname + '/pages/failureValidation.html');
+  try{
+    let idQrCode = req.params.id;
+    let result = await validateQRCode(idQrCode)
+    res.status(200).send(JSON.stringify({ success: result, message: result ? 'Sucesso, acesso liberado!' : 'Erro, QRCode já validado. Acesso negado!'}));
+  }catch(ex){
+    res.status(404).send(JSON.stringify({ success: false, message: 'Erro, QRCode é invalido. Acesso negado!'}));
+  }
 });
 
 app.delete('/qrcode/:id', async (req, res) => {

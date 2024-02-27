@@ -9,84 +9,37 @@
 <body>
     <nav class="navbar navbar-light bg-primary">
         <div class="container-fluid">
-          <span class="navbar-brand mb-0 h1 text-light"><i class="fa-solid fa-qrcode"></i> Gerador de QRCode</span>
+          <span class="navbar-brand mb-0 h1 text-light"><i class="fa-solid fa-bars"></i> Menu</span>
           <a class="btn btn-danger" onclick="logout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sair</a>
         </div>
     </nav>
+    
     <div class="container mt-5">
-        <form id="qrCodeForm">
-            <div class="mb-3">
-                <label for="quantidade" class="form-label">Pessoa responsável: <span class="text-danger" >*</span></label>
-                <input type="text" class="form-control" id="responsavel" placeholder="Responsável" min="1">
-            </div>
-            <div class="mb-3">
-                <label for="quantidade" class="form-label">Quantidade de QR Codes: <span class="text-danger" >*</span></label>
-                <input type="number" class="form-control" id="quantidade" placeholder="Quantidade" min="1">
-            </div>
-            <button type="submit" class="btn btn-primary">Gerar QRCodes para convidado</button>
-            <a class="btn btn-secondary" href="/listar">Gerenciar QRCodes</a>
-        </form>
+        <div class="row justify-content-between" style="font-size: 32px;">
+            <div class="col">
+                <a href="/scan" class="text-decoration-none">
+                    <div class="p-3 border bg-primary text-light d-flex flex-column align-items-center">
+                        <i class="fa-solid fa-camera"></i> Scanner
+                    </div>
+                </a>
+              </div>
+              <div class="col">
+                <a href="/gerar" class="text-decoration-none">
+                    <div class="p-3 border bg-success text-light d-flex flex-column align-items-center">
+                        <i class="fa-solid fa-qrcode"></i> Gerar QRCodes
+                    </div>
+                </a>
+              </div>
+              <div class="col">
+                <a href="/gerenciar" class="text-decoration-none">
+                    <div class="p-3 border bg-secondary text-light d-flex flex-column align-items-center">
+                        <i class="fa-solid fa-gear"></i> Gerenciar QRCodes
+                    </div>
+                </a>
+              </div>
+        </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            let fezlogin = localStorage.getItem('fezLogin');
-            if(!fezlogin){
-                window.location.href = '/';
-            }
-        });
-        
-        document.getElementById("qrCodeForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-            
-            var quantidade = document.getElementById("quantidade").value;
-            var responsavel = document.getElementById("responsavel").value;
-            
-            if(quantidade && responsavel && quantidade > 0){
-                let currentBaseUrl = window.location.origin;
-                let url = `${currentBaseUrl}/qrcode`;
-                fetch(url, {
-                    method: "POST",
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ quantidade: quantidade, responsavel: responsavel }),
-                })
-                .then(async (response) => {
-                    let blob = await response.blob();
-                    let url = window.URL.createObjectURL(blob);
-                    let a = document.createElement('a');
-                    a.href = url;
-                    a.download = `QRCodes_${responsavel}.zip`;
-                    document.body.appendChild(a);
-                    a.click();
-                    window.URL.revokeObjectURL(url);
-                    document.body.removeChild(a);
-                })
-                .catch(error => {
-                    console.error("Erro:", error);
-                });
-            }else{
-                if(!responsavel && !quantidade){
-                    alert("Campos Responsável e Quantidade de QR Codes são obrigatórios");
-                }
-                else if(quantidade <= 0){
-                    alert("Quantidade de QR Codes deve ser maior que 0");
-                }
-                else if(!responsavel){
-                    alert("Responsavel é obrigatorio");
-                }
-                else if(!quantidade){
-                    alert("Quantidade de QR Codes é obrigatorio");
-                }
-            }
-        });
-
-        function logout(){
-            localStorage.removeItem('fezLogin');
-            window.location.href = '/';
-        }
-    </script>
     <script src="https://kit.fontawesome.com/b78c95af54.js" crossorigin="anonymous"></script>
 </body>
 </html>

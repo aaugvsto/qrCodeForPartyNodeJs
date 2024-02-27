@@ -9,11 +9,10 @@ async function gerarQRCode(filePath, reponsavel) {
   try {
     let date = new Date();
     
-    let document = await client.insertOne({ validated: false, creationDate: formatarData(date), responsible: reponsavel});
+    let document = await client.insertOne({ validated: false, creationDate: formatarData(date), responsible: reponsavel, validationDate: null});
     let nomeArquivo = `${document.insertedId}.png`;
-    let linkQRCode = `${process.env.BASE_URL}/qrcode/${document.insertedId}/validate`;
 
-    await QRCode.toFile(filePath + nomeArquivo, linkQRCode);
+    await QRCode.toFile(filePath + nomeArquivo, `${document.insertedId}`);
 
     return nomeArquivo;
   } catch (err) {
@@ -24,9 +23,11 @@ async function gerarQRCode(filePath, reponsavel) {
 async function validateQRCode(id){
   let document = await client.findOne({ _id: new ObjectId(id) });
 
+  if(document == null) return null;
+
   if(document.validated) return false;
 
-  await client.updateOne({ _id: new ObjectId(id) }, { $set: { validated: true } });
+  await client.updateOne({ _id: new ObjectId(id) }, { $set: { validated: true, validationDate: formatarData() } });
 
   return true;
 }
