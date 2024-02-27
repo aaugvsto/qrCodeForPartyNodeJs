@@ -16,21 +16,21 @@
     
     <div class="container mt-5">
         <div class="row justify-content-between" style="font-size: 32px;">
-            <div class="col">
+            <div class="col-sm mb-3">
                 <a href="/scan" class="text-decoration-none">
                     <div class="p-3 border bg-primary text-light d-flex flex-column align-items-center">
                         <i class="fa-solid fa-camera"></i> Scanner
                     </div>
                 </a>
               </div>
-              <div class="col">
+              <div class="col-sm mb-3">
                 <a href="/gerar" class="text-decoration-none">
                     <div class="p-3 border bg-success text-light d-flex flex-column align-items-center">
                         <i class="fa-solid fa-qrcode"></i> Gerar QRCodes
                     </div>
                 </a>
               </div>
-              <div class="col">
+              <div class="col-sm">
                 <a href="/gerenciar" class="text-decoration-none">
                     <div class="p-3 border bg-secondary text-light d-flex flex-column align-items-center">
                         <i class="fa-solid fa-gear"></i> Gerenciar QRCodes
@@ -41,5 +41,11 @@
     </div>
 
     <script src="https://kit.fontawesome.com/b78c95af54.js" crossorigin="anonymous"></script>
+    <script>
+        function logout(){
+            localStorage.removeItem('fezLogin');
+            window.location.href = '/';
+        }
+    </script>
 </body>
 </html>
