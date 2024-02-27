@@ -48,7 +48,7 @@ async function gerarImagemQRCode(idQrCode) {
 
   if(qrCode) {
     filePath = `src/qrcodes/${idQrCode}.png`;
-    await QRCode.toFile(filePath, `${process.env.BASE_URL}/qrcode/${idQrCode}/validate`);
+    await QRCode.toFile(filePath, `${idQrCode}`);
   }
 
   return filePath;
