@@ -24,7 +24,7 @@ app.get('/home', (req, res) => {
 });
 
 app.get('/gerar', (req, res) => {
-  res.sendFile(__dirname + '/pages/index.html');
+  res.sendFile(__dirname + '/pages/gerador.html');
 });
 
 app.get('/gerenciar', (req, res) => {
