@@ -124,6 +124,7 @@ Instascan.Camera.getCameras().then(cameras => {
                 });
                 // Iniciando o scanner
                 scanner.start(selectedCamera);
+                document.getElementById('preview').style.display = 'block';
             } else {
                 console.error('Câmera selecionada não encontrada.');
             }
