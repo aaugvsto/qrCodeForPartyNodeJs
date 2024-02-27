@@ -61,7 +61,8 @@
             Instascan.Camera.getCameras().then(cameras => 
             {
                 if(cameras.length > 0){
-                    scanner.start(cameras[0]);
+                    let camNumber = isMobileDevice() ? 1 : 0;
+                    scanner.start(cameras[camNumber]);
                 } else {
                     console.error("Não existe câmera no dispositivo!");
                 }
@@ -78,6 +79,10 @@
         function logout(){
             localStorage.removeItem('fezLogin');
             window.location.href = '/';
+        }
+
+        function isMobileDevice() {
+            return /Mobi|Android/i.test(navigator.userAgent);
         }
     </script>
 </body>
